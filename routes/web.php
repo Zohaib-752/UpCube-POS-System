@@ -84,9 +84,9 @@ Route::middleware('auth')->controller(PurchaseController::class)->group(function
     Route::get('/admin/purchase/all', 'PurchaseAll')->name('purchase.all');
     Route::get('/admin/purchase/add', 'PurchaseCreate')->name('purchase.create');
     Route::post('/admin/purchase/store', 'PurchaseStore')->name('purchase.store');
-    Route::get('/admin/purchase/edit/{id}', 'PurchaseEdit')->name('purchase.edit');
-    Route::put('/admin/purchase/update/{id}', 'PurchaseUpdate')->name('purchase.update');
     Route::get('/admin/purchase/delete/{id}', 'PurchaseDelete')->name('purchase.delete');
+    Route::get('/admin/purchase/pending', 'PurchasePending')->name('purchase.pending');
+    Route::get('/admin/purchase/approve/{id}', 'PurchaseApproved')->name('purchase.approved');
 });
 
 // All Default Routes

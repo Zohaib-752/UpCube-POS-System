@@ -1,5 +1,5 @@
 @extends('admin.layout.master')
-@section('page-title', 'Add Suppliers')
+@section('page-title', 'Add Purchase')
 
 
 
@@ -65,35 +65,35 @@
                     <div class="card">
                         <div class="card-body">
                             <h4 class="card-title">Purchase Items</h4> <br><br>
-                            <table class="table table-bordered" id="purchaseTable">
-                                <thead>
-                                    <tr>
-                                        <th>Category Name</th>
-                                        <th>Product Name</th>
-                                        <th>PCS/KG</th>
-                                        <th>Unit Price</th>
-                                        <th>Description</th>
-                                        <th>Total Price</th>
-                                        <th>Action</th>
-                                    </tr>
-                                </thead>
-                                <form id="addPurchaseItemForm" name="addPurchaseItemForm" method="post"
-                                    action="{{ route('purchase.store') }}">
-                                    @csrf
+                            <form id="addPurchaseItemForm" name="addPurchaseItemForm" method="post"
+                                action="{{ route('purchase.store') }}">
+                                @csrf
+                                <table class="table table-bordered" id="purchaseTable">
+                                    <thead>
+                                        <tr>
+                                            <th>Category Name</th>
+                                            <th>Product Name</th>
+                                            <th>PCS/KG</th>
+                                            <th>Unit Price</th>
+                                            <th>Description</th>
+                                            <th>Total Price</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
                                     <tbody id="addRow" class="addRow">
 
                                     </tbody>
                                     <tbody>
                                         <tr>
                                             <td colspan="5"></td>
-                                            <td> <input type="text" name="estimation_amount" id="estimation_amount"
+                                            <td> <input type="text" name="estimated_amount" id="estimated_amount"
                                                     class="form-control bg-lights" value="0" readonly>
                                             </td>
                                         </tr>
                                     </tbody>
-                            </table>
-                            <button type="submit" class="btn btn-info btn-lg waves-effect waves-light mt-4">Add
-                                Purchase</button>
+                                </table>
+                                <button type="submit" class="btn btn-info btn-lg waves-effect waves-light mt-4">Add
+                                    Purchase</button>
                             </form>
                         </div>
                     </div>
@@ -117,19 +117,21 @@
                 <input type="hidden" name="supplier_id[]" value="@{{ supplier_id }}">
 
                 <td>
-                    <input type="text" name="category_id[]" id="category_id" class="form-control bg-light text-right"
-                        value="@{{ category_name }}">
+                    <input type="hidden" name="category_id[]" value="@{{ category_id }}">
+                    <input type="text" class="form-control bg-light text-right"
+                        value="@{{ category_name }}" readonly>
                 </td>
                 <td>
-                    <input type="text" name="product_id[]" id="product_id" class="form-control bg-light text-right"
-                        value="@{{ product_name }}">
+                    <input type="hidden" name="product_id[]" id="product_id" value="@{{ product_id }}">
+                    <input type="text" class="form-control bg-light text-right"
+                        value="@{{ product_name }}" readonly>
                 </td>
                 <td>
                     <input type="number" min="1" name="buying_qty[]" id="buying_qty"
-                        class="form-control bg-light text-right " value="">
+                        class="form-control bg-light text-right buying_qty" value="">
                 </td>
                 <td>
-                    <input type="number" name="unit_price[]" id="unit_price" class="form-control bg-light text-right"
+                    <input type="number" name="unit_price[]" id="unit_price" class="form-control bg-light text-right unit_price"
                         value="">
                 </td>
 
@@ -137,7 +139,7 @@
                     <input type="text" name="description[]" id="description" class="form-control bg-light text-right">
                 </td>
                 <td>
-                    <input type="number" name="total_cost[]" id="total_cost" class="form-control bg-light text-right"
+                    <input type="number" name="buying_price[]" id="buying_price" class="form-control bg-light text-right buying_price"
                         value="0" readonly>
                 </td>
                 <td>
@@ -191,6 +193,15 @@
                     },
                     unit_id: {
                         required: 'Please Enter Unit',
+                    },
+                    buying_qty: {
+                        required: 'Please Enter Quantity',
+                    },
+                    unit_price: {
+                        required: 'Please Enter Unit Price',
+                    },
+                    buying_price: {
+                        required: 'Please Enter Buying Price',
                     },
 
                 },
@@ -340,21 +351,30 @@
 
             $(document).on('click', '.removeEvent', function() {
                 $(this).closest('.delete_add_item').remove();
+                totalEstimationAmount();
             })
 
-            $(document).on('keyup click', '#unit_price,#buying_qty', function() {
-                let unitPrice = $(this).closest('tr').find('input#unit_price').val();
-                let buyingQty = $(this).closest('tr').find('input#buying_qty').val();
+            $(document).on('keyup click', '.unit_price, .buying_qty', function() {
+                let unitPrice = $(this).closest('tr').find('input.unit_price').val();
+                let buyingQty = $(this).closest('tr').find('input.buying_qty').val();
                 let total = unitPrice * buyingQty;
 
-                $(this).closest('tr').find('input#total_cost').val(total);
-
-                let estimateTotal = total + total;
-                $('#estimate_total').val(estimateTotal);
-
-
-
+                $(this).closest('tr').find('input.buying_price').val(total);
+                totalEstimationAmount();
             })
+
+
+            function totalEstimationAmount() {
+                let sum = 0;
+                $('.buying_price').each(function() {
+                    let value = $(this).val();
+
+                    if(!isNaN(value) && value.length != 0)
+                        sum += parseFloat(value);
+                })
+
+                $('#estimated_amount').val(sum);
+            }
         })
     </script>
 

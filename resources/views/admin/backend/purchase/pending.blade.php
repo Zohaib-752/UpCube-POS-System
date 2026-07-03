@@ -52,7 +52,7 @@
 
                                 <tbody>
 
-                                    @forelse ($purchase as $key => $item)
+                                    @forelse ($pendings as $key => $item)
                                         <tr>
                                             <td> {{ $key + 1 }} </td>
                                             <td> {{ $item->purchase_no }} </td>
@@ -70,9 +70,9 @@
                                             </td>
                                             <td>
                                                 @if ($item->status == 0)
-                                                    <a href="{{ route('purchase.delete', $item->id) }}"
-                                                        class="btn btn-danger btn-rounded waves-effect waves-light mb-2"
-                                                        title="Delete Data" id="delete"> <i class="fas fa-trash-alt"></i>
+                                                    <a href="{{ route('purchase.approved', $item->id) }}"
+                                                        class="btn btn-success btn-rounded waves-effect waves-light mb-2"
+                                                        title="Approved" id="approvedBtn"> <i class="fas fa-check"></i>
                                                     </a>
                                                 @endif
                                             </td>

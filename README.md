@@ -181,15 +181,7 @@ Ensure you have the following installed:
 
 ---
 
-## 🔮 Roadmap & Upcoming Features
 
-*   [ ] Barcode / QR Code Scanning for fast checkout.
-*   [ ] Direct PDF/Thermal Receipt Printing integration.
-*   [ ] Multiple stores/outlets sync support.
-*   [ ] Advanced profit/loss reporting charts.
-*   [ ] Multi-role user permissions (Admin, Manager, Cashier).
-
----
 
 ## 👨‍💻 Developer & Authors
 
